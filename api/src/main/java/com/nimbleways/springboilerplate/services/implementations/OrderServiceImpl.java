@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.nimbleways.springboilerplate.dto.product.ProcessOrderResponse;
 import com.nimbleways.springboilerplate.entities.Order;
 import com.nimbleways.springboilerplate.entities.Product;
+import com.nimbleways.springboilerplate.exceptions.OrderNotFoundException;
 import com.nimbleways.springboilerplate.repositories.OrderRepository;
 import com.nimbleways.springboilerplate.services.OrderService;
 import com.nimbleways.springboilerplate.services.handlers.ProductTypeHandlerFactory;
@@ -30,7 +31,7 @@ public class OrderServiceImpl implements OrderService {
     public ProcessOrderResponse processOrder(Long orderId) {
         logger.info("Processing order {}", orderId);
         Order order = orderRepository.findById(orderId)
-                .orElseThrow(() -> new IllegalArgumentException("Order not found: " + orderId));
+                .orElseThrow(() -> new OrderNotFoundException(orderId));
 
         Set<Product> products = order.getItems();
         logger.debug("Order {} contains {} products", orderId, products.size());
