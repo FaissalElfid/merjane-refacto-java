@@ -25,12 +25,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-// Specify the controller class you want to test
-// This indicates to spring boot to only load UsersController into the context
-// Which allows a better performance and needs to do less mocks
 @SpringBootTest
 @AutoConfigureMockMvc
-public class MyControllerIntegrationTests {
+public class OrderControllerIntegrationTests {
         @Autowired
         private MockMvc mockMvc;
 
@@ -50,7 +47,7 @@ public class MyControllerIntegrationTests {
                 Order order = createOrder(orderItems);
                 productRepository.saveAll(allProducts);
                 order = orderRepository.save(order);
-                mockMvc.perform(post("/orders/{orderId}/processOrder", order.getId())
+                mockMvc.perform(post("/orders/{orderId}/process", order.getId())
                                 .contentType("application/json"))
                                 .andExpect(status().isOk());
                 Order resultOrder = orderRepository.findById(order.getId()).get();
